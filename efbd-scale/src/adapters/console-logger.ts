@@ -1,4 +1,4 @@
-import { ILogger } from "../ports/outbound/logger.js";
+import { ILogger } from '../ports/outbound/logger.js';
 
 export class ConsoleLogger implements ILogger {
   info(message: string, context?: Record<string, unknown>): void {

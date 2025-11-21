@@ -1,5 +1,5 @@
-import { ScaleSnapshot } from "../core/scale-snapshot.js";
-import { IScaleRepository } from "../ports/outbound/scale-repository.js";
+import { ScaleSnapshot } from '../core/scale-snapshot.js';
+import { IScaleRepository } from '../ports/outbound/scale-repository.js';
 
 export class InMemoryScaleRepository implements IScaleRepository {
   private readonly store = new Map<string, ScaleSnapshot>();
@@ -17,7 +17,7 @@ export class InMemoryScaleRepository implements IScaleRepository {
     return new ScaleSnapshot({
       profileId: snapshot.profileId,
       axisScores: new Map(snapshot.axisScores),
-      updatedAt: new Date(snapshot.updatedAt.getTime())
+      updatedAt: new Date(snapshot.updatedAt.getTime()),
     });
   }
 }

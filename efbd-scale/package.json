@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "test": "vitest run"
   },
   "engines": {
@@ -27,6 +29,7 @@
     "@types/node": "^24.10.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.0.0",
+    "prettier": "^3.3.0",
     "vitest": "^1.0.0"
   }
 }

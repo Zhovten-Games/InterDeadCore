@@ -1,5 +1,5 @@
-import { AxisCode } from "../../core/axis-code.js";
-import { ScaleSnapshot } from "../../core/scale-snapshot.js";
+import { AxisCode } from '../../core/axis-code.js';
+import { ScaleSnapshot } from '../../core/scale-snapshot.js';
 
 export interface ScaleTrigger {
   axis: AxisCode;

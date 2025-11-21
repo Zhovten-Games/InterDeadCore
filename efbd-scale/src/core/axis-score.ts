@@ -1,4 +1,4 @@
-import { AxisCode } from "./axis-code.js";
+import { AxisCode } from './axis-code.js';
 
 export interface AxisScoreProps {
   axis: AxisCode;
@@ -29,7 +29,7 @@ export class AxisScore {
       axis: this.axis,
       value: nextValue,
       lastUpdated: at,
-      lastTriggerSource: source
+      lastTriggerSource: source,
     });
   }
 }

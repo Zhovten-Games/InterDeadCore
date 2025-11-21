@@ -1,4 +1,7 @@
-import { ITriggerLogRepository, TriggerLogEntry } from "../ports/outbound/trigger-log-repository.js";
+import {
+  ITriggerLogRepository,
+  TriggerLogEntry,
+} from '../ports/outbound/trigger-log-repository.js';
 
 export class InMemoryTriggerLogRepository implements ITriggerLogRepository {
   private readonly entries: TriggerLogEntry[] = [];

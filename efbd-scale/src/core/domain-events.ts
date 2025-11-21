@@ -1,6 +1,6 @@
 export enum DomainEventType {
-  SCALE_UPDATED = "SCALE_UPDATED",
-  TRIGGER_RECORDED = "TRIGGER_RECORDED"
+  SCALE_UPDATED = 'SCALE_UPDATED',
+  TRIGGER_RECORDED = 'TRIGGER_RECORDED',
 }
 
 export interface DomainEvent<TPayload = unknown> {

@@ -1,9 +1,9 @@
 export enum AxisCode {
-  EBF_SOCIAL = "EBF-SOCIAL",
-  EBF_MIND = "EBF-MIND",
-  EBF_DECLINE = "EBF-DECLINE",
-  EBF_EXPOSURE = "EBF-EXPOSURE",
-  EBF_ABANDON = "EBF-ABANDON"
+  EBF_SOCIAL = 'EBF-SOCIAL',
+  EBF_MIND = 'EBF-MIND',
+  EBF_DECLINE = 'EBF-DECLINE',
+  EBF_EXPOSURE = 'EBF-EXPOSURE',
+  EBF_ABANDON = 'EBF-ABANDON',
 }
 
 export const ALL_AXIS_CODES: AxisCode[] = [
@@ -11,7 +11,7 @@ export const ALL_AXIS_CODES: AxisCode[] = [
   AxisCode.EBF_MIND,
   AxisCode.EBF_DECLINE,
   AxisCode.EBF_EXPOSURE,
-  AxisCode.EBF_ABANDON
+  AxisCode.EBF_ABANDON,
 ];
 
 export function isAxisCode(value: string): value is AxisCode {

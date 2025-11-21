@@ -1,4 +1,4 @@
-import { AxisCode } from "../../core/axis-code.js";
+import { AxisCode } from '../../core/axis-code.js';
 
 export interface TriggerLogEntry {
   profileId: string;

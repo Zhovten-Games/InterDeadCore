@@ -1,10 +1,10 @@
-import { describe, expect, it } from "vitest";
-import { ScaleSnapshot } from "../src/core/scale-snapshot.js";
-import { ALL_AXIS_CODES } from "../src/core/axis-code.js";
-import { ScaleSyncService } from "../src/application/scale-sync-service.js";
-import { ILogger, NullLogger } from "../src/ports/outbound/logger.js";
-import { IScaleRepository } from "../src/ports/outbound/scale-repository.js";
-import { AxisScore } from "../src/core/axis-score.js";
+import { describe, expect, it } from 'vitest';
+import { ScaleSnapshot } from '../src/core/scale-snapshot.js';
+import { ALL_AXIS_CODES } from '../src/core/axis-code.js';
+import { ScaleSyncService } from '../src/application/scale-sync-service.js';
+import { ILogger, NullLogger } from '../src/ports/outbound/logger.js';
+import { IScaleRepository } from '../src/ports/outbound/scale-repository.js';
+import { AxisScore } from '../src/core/axis-score.js';
 
 class FailingRepository implements IScaleRepository {
   private attempts = 0;
@@ -17,7 +17,7 @@ class FailingRepository implements IScaleRepository {
   async saveSnapshot(_snapshot: ScaleSnapshot): Promise<void> {
     this.attempts += 1;
     if (this.attempts <= this.failUntil) {
-      throw new Error("Transient failure");
+      throw new Error('Transient failure');
     }
   }
 }
@@ -40,17 +40,20 @@ class MemoryLogger extends NullLogger implements ILogger {
   }
 }
 
-describe("ScaleSyncService", () => {
-  it("retries saving snapshot before failing", async () => {
+describe('ScaleSyncService', () => {
+  it('retries saving snapshot before failing', async () => {
     const repo = new FailingRepository(2);
     const logger = new MemoryLogger();
     const sync = new ScaleSyncService(repo, logger, { backoffMs: 0 });
     const snapshot = new ScaleSnapshot({
-      profileId: "player-99",
+      profileId: 'player-99',
       axisScores: new Map(
-        ALL_AXIS_CODES.map((axis) => [axis, new AxisScore({ axis, value: 0, lastUpdated: new Date() })])
+        ALL_AXIS_CODES.map((axis) => [
+          axis,
+          new AxisScore({ axis, value: 0, lastUpdated: new Date() }),
+        ]),
       ),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
     await sync.syncSnapshot(snapshot);

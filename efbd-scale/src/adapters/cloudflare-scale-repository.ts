@@ -1,7 +1,7 @@
-import { ALL_AXIS_CODES, AxisCode } from "../core/axis-code.js";
-import { AxisScore } from "../core/axis-score.js";
-import { ScaleSnapshot } from "../core/scale-snapshot.js";
-import { IScaleRepository } from "../ports/outbound/scale-repository.js";
+import { ALL_AXIS_CODES, AxisCode } from '../core/axis-code.js';
+import { AxisScore } from '../core/axis-score.js';
+import { ScaleSnapshot } from '../core/scale-snapshot.js';
+import { IScaleRepository } from '../ports/outbound/scale-repository.js';
 
 interface D1PreparedStatement<T = unknown> {
   bind(...values: unknown[]): D1PreparedStatement<T>;
@@ -27,7 +27,7 @@ export class CloudflareScaleRepositoryAdapter implements IScaleRepository {
   async getSnapshot(profileId: string): Promise<ScaleSnapshot | null> {
     const statement = this.database
       .prepare<ScaleTableRow>(
-        "SELECT profile_id, axis_code, score, trigger_source, updated_at FROM efbd_scale WHERE profile_id = ?"
+        'SELECT profile_id, axis_code, score, trigger_source, updated_at FROM efbd_scale WHERE profile_id = ?',
       )
       .bind(profileId);
     const { results } = await statement.all();
@@ -45,8 +45,8 @@ export class CloudflareScaleRepositoryAdapter implements IScaleRepository {
           axis: row.axis_code as AxisCode,
           value: row.score,
           lastTriggerSource: row.trigger_source ?? undefined,
-          lastUpdated: new Date(row.updated_at)
-        })
+          lastUpdated: new Date(row.updated_at),
+        }),
       );
     }
     return new ScaleSnapshot({ profileId, axisScores, updatedAt: new Date(results[0].updated_at) });
@@ -56,14 +56,14 @@ export class CloudflareScaleRepositoryAdapter implements IScaleRepository {
     for (const [axis, score] of snapshot.axisScores.entries()) {
       const statement = this.database
         .prepare(
-          "INSERT OR REPLACE INTO efbd_scale (profile_id, axis_code, score, trigger_source, updated_at) VALUES (?, ?, ?, ?, ?)"
+          'INSERT OR REPLACE INTO efbd_scale (profile_id, axis_code, score, trigger_source, updated_at) VALUES (?, ?, ?, ?, ?)',
         )
         .bind(
           snapshot.profileId,
           axis,
           score.value,
           score.lastTriggerSource ?? null,
-          score.lastUpdated.toISOString()
+          score.lastUpdated.toISOString(),
         );
       await statement.run();
     }

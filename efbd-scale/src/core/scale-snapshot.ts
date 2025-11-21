@@ -1,5 +1,5 @@
-import { ALL_AXIS_CODES, AxisCode } from "./axis-code.js";
-import { AxisScore } from "./axis-score.js";
+import { ALL_AXIS_CODES, AxisCode } from './axis-code.js';
+import { AxisScore } from './axis-score.js';
 
 export interface ScaleSnapshotProps {
   profileId: string;
@@ -23,13 +23,18 @@ export class ScaleSnapshot {
     ALL_AXIS_CODES.forEach((axis) => {
       scores.set(
         axis,
-        new AxisScore({ axis, value: 0, lastUpdated: at, lastTriggerSource: undefined })
+        new AxisScore({ axis, value: 0, lastUpdated: at, lastTriggerSource: undefined }),
       );
     });
     return new ScaleSnapshot({ profileId, axisScores: scores, updatedAt: at });
   }
 
-  public withIncrementedAxis(axis: AxisCode, amount: number, source: string, at: Date): ScaleSnapshot {
+  public withIncrementedAxis(
+    axis: AxisCode,
+    amount: number,
+    source: string,
+    at: Date,
+  ): ScaleSnapshot {
     const scores = new Map(this.axisScores);
     const current = scores.get(axis);
     if (!current) {
