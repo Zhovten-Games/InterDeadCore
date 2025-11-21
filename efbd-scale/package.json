@@ -1,0 +1,32 @@
+{
+  "name": "@interdead/efbd-scale",
+  "version": "0.1.0",
+  "description": "Hexagonal EFBD scale domain, application services, and adapters.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "efbd",
+    "hexagonal",
+    "interdead"
+  ],
+  "author": "InterDead Core",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
