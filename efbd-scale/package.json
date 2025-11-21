@@ -1,6 +1,6 @@
 {
   "name": "@interdead/efbd-scale",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hexagonal EFBD scale domain, application services, and adapters.",
   "type": "module",
   "main": "dist/index.js",
