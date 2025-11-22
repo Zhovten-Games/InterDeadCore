@@ -1,5 +1,5 @@
-import { IdentityStateProps } from '../core/IdentityAggregate.js';
-import { IIdentityRepository } from '../ports/index.js';
+import { IdentityStateProps } from "../core/IdentityAggregate.js";
+import { IIdentityRepository } from "../ports/index.js";
 
 export class LocalProfileRepositoryAdapter implements IIdentityRepository {
   private readonly store = new Map<string, IdentityStateProps>();

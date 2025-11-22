@@ -1,10 +1,23 @@
-import { IdentityLinkService } from '../application/IdentityLinkService.js';
-import { IdentitySyncService } from '../application/IdentitySyncService.js';
-import { ProfileCompletionService } from '../application/ProfileCompletionService.js';
-import { LocalProfileRepositoryAdapter } from '../adapters/LocalProfileRepositoryAdapter.js';
-import { DiscordOAuthAdapter, DiscordOAuthConfig } from '../adapters/DiscordOAuthAdapter.js';
-import { CloudflareProfileRepositoryAdapter, CloudflareBindings } from '../adapters/CloudflareProfileRepositoryAdapter.js';
-import { IClock, IEventBusPort, IProfileCompletionPort, ILogger, ISessionStore, IScaleAdapter } from '../ports/index.js';
+import { IdentityLinkService } from "../application/IdentityLinkService.js";
+import { IdentitySyncService } from "../application/IdentitySyncService.js";
+import { ProfileCompletionService } from "../application/ProfileCompletionService.js";
+import { LocalProfileRepositoryAdapter } from "../adapters/LocalProfileRepositoryAdapter.js";
+import {
+  DiscordOAuthAdapter,
+  DiscordOAuthConfig,
+} from "../adapters/DiscordOAuthAdapter.js";
+import {
+  CloudflareProfileRepositoryAdapter,
+  CloudflareBindings,
+} from "../adapters/CloudflareProfileRepositoryAdapter.js";
+import {
+  IClock,
+  IEventBusPort,
+  IProfileCompletionPort,
+  ILogger,
+  ISessionStore,
+  IScaleAdapter,
+} from "../ports/index.js";
 
 export interface IdentityCoreOptions {
   readonly discord?: DiscordOAuthConfig;
@@ -20,7 +33,7 @@ export interface IdentityCoreOptions {
 const defaultLogger: ILogger = {
   info: () => undefined,
   warn: () => undefined,
-  error: () => undefined
+  error: () => undefined,
 };
 
 export const createIdentityCore = (options: IdentityCoreOptions) => {
@@ -29,10 +42,26 @@ export const createIdentityCore = (options: IdentityCoreOptions) => {
     ? new CloudflareProfileRepositoryAdapter(options.cloudflare, logger)
     : new LocalProfileRepositoryAdapter();
 
-  const discordPort = options.discord ? new DiscordOAuthAdapter(options.discord, logger) : undefined;
-  const linkService = new IdentityLinkService(repository, discordPort, options.eventBus, options.sessionStore, logger);
-  const syncService = new IdentitySyncService(repository, options.scaleAdapter, logger);
-  const completionService = new ProfileCompletionService(repository, options.completionPort, logger);
+  const discordPort = options.discord
+    ? new DiscordOAuthAdapter(options.discord, logger)
+    : undefined;
+  const linkService = new IdentityLinkService(
+    repository,
+    discordPort,
+    options.eventBus,
+    options.sessionStore,
+    logger,
+  );
+  const syncService = new IdentitySyncService(
+    repository,
+    options.scaleAdapter,
+    logger,
+  );
+  const completionService = new ProfileCompletionService(
+    repository,
+    options.completionPort,
+    logger,
+  );
 
   return {
     linkService,
@@ -40,6 +69,6 @@ export const createIdentityCore = (options: IdentityCoreOptions) => {
     completionService,
     repository,
     logger,
-    clock: options.clock ?? { now: () => new Date() }
+    clock: options.clock ?? { now: () => new Date() },
   };
 };
