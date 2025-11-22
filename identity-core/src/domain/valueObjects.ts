@@ -13,7 +13,7 @@ export class DiscordProfileLink {
 
   constructor(props: DiscordProfileLinkProps) {
     if (!/^\d+$/.test(props.discordId)) {
-      throw new Error("Discord ID must be a numeric snowflake");
+      throw new Error('Discord ID must be a numeric snowflake');
     }
     this.discordId = props.discordId;
     this.username = props.username.trim();
@@ -37,7 +37,7 @@ export class ProfileMetadata {
 
   constructor(props: ProfileMetadataProps) {
     if (!props.displayName.trim()) {
-      throw new Error("Display name is required");
+      throw new Error('Display name is required');
     }
     this.profileId = props.profileId;
     this.displayName = props.displayName.trim();
@@ -45,14 +45,12 @@ export class ProfileMetadata {
     this.avatarUrl = props.avatarUrl;
   }
 
-  withOverrides(
-    overrides: Partial<Omit<ProfileMetadataProps, "profileId">>,
-  ): ProfileMetadata {
+  withOverrides(overrides: Partial<Omit<ProfileMetadataProps, 'profileId'>>): ProfileMetadata {
     return new ProfileMetadata({
       profileId: this.profileId,
       displayName: overrides.displayName ?? this.displayName,
       location: overrides.location ?? this.location,
-      avatarUrl: overrides.avatarUrl ?? this.avatarUrl,
+      avatarUrl: overrides.avatarUrl ?? this.avatarUrl
     });
   }
 }
@@ -68,10 +66,10 @@ export class ScaleSnapshotRef {
 
   constructor(props: ScaleSnapshotRefProps) {
     if (!props.axisCode.trim()) {
-      throw new Error("Axis code is required");
+      throw new Error('Axis code is required');
     }
     if (!props.snapshotId.trim()) {
-      throw new Error("Snapshot id is required");
+      throw new Error('Snapshot id is required');
     }
     this.axisCode = props.axisCode;
     this.snapshotId = props.snapshotId;

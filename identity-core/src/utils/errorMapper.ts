@@ -1,16 +1,10 @@
 export class IdentityCoreError extends Error {
-  constructor(
-    message: string,
-    public readonly cause?: unknown,
-  ) {
+  constructor(message: string, public readonly cause?: unknown) {
     super(message);
   }
 }
 
-export const mapError = (
-  error: unknown,
-  fallbackMessage: string,
-): IdentityCoreError => {
+export const mapError = (error: unknown, fallbackMessage: string): IdentityCoreError => {
   if (error instanceof IdentityCoreError) {
     return error;
   }

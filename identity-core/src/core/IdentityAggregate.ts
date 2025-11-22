@@ -1,15 +1,6 @@
-import {
-  createEvent,
-  DiscordLinkedPayload,
-  DiscordUnlinkedPayload,
-  ProfileUpdatedPayload,
-} from "../domain/events.js";
-import {
-  DiscordProfileLink,
-  ProfileMetadata,
-  ScaleSnapshotRef,
-} from "../domain/valueObjects.js";
-import { DiscordLinkPolicy } from "../domain/policies/DiscordLinkPolicy.js";
+import { createEvent, DiscordLinkedPayload, DiscordUnlinkedPayload, ProfileUpdatedPayload } from '../domain/events.js';
+import { DiscordProfileLink, ProfileMetadata, ScaleSnapshotRef } from '../domain/valueObjects.js';
+import { DiscordLinkPolicy } from '../domain/policies/DiscordLinkPolicy.js';
 
 export interface IdentityStateProps {
   readonly metadata: ProfileMetadata;
@@ -33,29 +24,25 @@ export class IdentityAggregate {
     return {
       metadata: this.metadata,
       discordLink: this.discordLink,
-      scaleSnapshots: [...this.scaleSnapshots],
+      scaleSnapshots: [...this.scaleSnapshots]
     };
   }
 
-  linkDiscord(
-    link: DiscordProfileLink,
-    policy: DiscordLinkPolicy,
-    allowUsernameOverride: boolean,
-  ): void {
+  linkDiscord(link: DiscordProfileLink, policy: DiscordLinkPolicy, allowUsernameOverride: boolean): void {
     const updatedMetadata = policy.canOverrideMetadata({
       existingMetadata: this.metadata,
       incomingLink: link,
-      allowUsernameOverride,
+      allowUsernameOverride
     });
 
     this.metadata = updatedMetadata;
     this.discordLink = link;
     this.events.push(
-      createEvent<DiscordLinkedPayload>("IDENTITY_LINKED", {
+      createEvent<DiscordLinkedPayload>('IDENTITY_LINKED', {
         profileId: this.metadata.profileId,
         discordId: link.discordId,
-        username: link.username,
-      }),
+        username: link.username
+      })
     );
   }
 
@@ -63,33 +50,28 @@ export class IdentityAggregate {
     if (!this.discordLink) return;
     this.discordLink = undefined;
     this.events.push(
-      createEvent<DiscordUnlinkedPayload>("IDENTITY_UNLINKED", {
-        profileId: this.metadata.profileId,
-      }),
+      createEvent<DiscordUnlinkedPayload>('IDENTITY_UNLINKED', {
+        profileId: this.metadata.profileId
+      })
     );
   }
 
-  updateProfile(changes: Partial<Omit<ProfileMetadata, "profileId">>): void {
+  updateProfile(changes: Partial<Omit<ProfileMetadata, 'profileId'>>): void {
     const previous = this.metadata;
     this.metadata = this.metadata.withOverrides(changes);
     this.events.push(
-      createEvent<ProfileUpdatedPayload>("PROFILE_UPDATED", {
+      createEvent<ProfileUpdatedPayload>('PROFILE_UPDATED', {
         profileId: this.metadata.profileId,
         changes: {
           before: previous,
-          after: this.metadata,
-        },
-      }),
+          after: this.metadata
+        }
+      })
     );
   }
 
   attachSnapshot(ref: ScaleSnapshotRef): void {
-    this.scaleSnapshots = [
-      ...this.scaleSnapshots.filter(
-        (existing) => existing.axisCode !== ref.axisCode,
-      ),
-      ref,
-    ];
+    this.scaleSnapshots = [...this.scaleSnapshots.filter((existing) => existing.axisCode !== ref.axisCode), ref];
   }
 
   pullEvents(): ReturnType<typeof createEvent>[] {

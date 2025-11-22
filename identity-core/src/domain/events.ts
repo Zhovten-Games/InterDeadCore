@@ -1,7 +1,7 @@
 export type IdentityEventType =
-  | "IDENTITY_LINKED"
-  | "IDENTITY_UNLINKED"
-  | "PROFILE_UPDATED";
+  | 'IDENTITY_LINKED'
+  | 'IDENTITY_UNLINKED'
+  | 'PROFILE_UPDATED';
 
 export interface DomainEvent<TPayload = unknown> {
   readonly type: IdentityEventType;
@@ -27,9 +27,9 @@ export interface ProfileUpdatedPayload {
 export const createEvent = <TPayload>(
   type: IdentityEventType,
   payload: TPayload,
-  clock: () => Date = () => new Date(),
+  clock: () => Date = () => new Date()
 ): DomainEvent<TPayload> => ({
   type,
   payload,
-  occurredAt: clock(),
+  occurredAt: clock()
 });

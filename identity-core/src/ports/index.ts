@@ -1,10 +1,6 @@
-import { IdentityStateProps } from "../core/IdentityAggregate.js";
-import {
-  DiscordProfileLink,
-  ProfileMetadata,
-  ScaleSnapshotRef,
-} from "../domain/valueObjects.js";
-import { DomainEvent } from "../domain/events.js";
+import { IdentityStateProps } from '../core/IdentityAggregate.js';
+import { DiscordProfileLink, ProfileMetadata, ScaleSnapshotRef } from '../domain/valueObjects.js';
+import { DomainEvent } from '../domain/events.js';
 
 export interface IDiscordOAuthPort {
   exchangeCode(code: string): Promise<DiscordProfileLink>;
@@ -17,9 +13,7 @@ export interface IIdentityRepository {
 }
 
 export interface IProfileCompletionPort {
-  requestMissingFields(
-    metadata: ProfileMetadata,
-  ): Promise<Partial<ProfileMetadata>>;
+  requestMissingFields(metadata: ProfileMetadata): Promise<Partial<ProfileMetadata>>;
 }
 
 export interface IEventBusPort {
