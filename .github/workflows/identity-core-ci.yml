@@ -1,18 +1,17 @@
-name: EFBD Scale Release
+name: Identity Core CI
 
 on:
   push:
-    tags:
-      - "efbd-scale-v*.*.*"
-  workflow_dispatch: 
+    branches: [ main, develop ]
+  pull_request:
 
 jobs:
-  publish:
+  test-and-build:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: efbd-scale
+        working-directory: identity-core
 
     steps:
       - name: Checkout
@@ -23,19 +22,16 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: efbd-scale/package-lock.json
-          registry-url: https://registry.npmjs.org
+          cache-dependency-path: identity-core/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
 
       - name: Run tests
         run: npm test
 
       - name: Build
         run: npm run build
-
-      - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
