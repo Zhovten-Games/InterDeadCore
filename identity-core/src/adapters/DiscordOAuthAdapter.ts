@@ -2,13 +2,15 @@ import { DiscordProfileLink } from "../domain/valueObjects.js";
 import { IDiscordOAuthPort, ILogger } from "../ports/index.js";
 import { mapError } from "../utils/errorMapper.js";
 
+type FetchBinding = typeof fetch | { fetch: typeof fetch };
+
 export interface DiscordOAuthConfig {
   readonly clientId: string;
   readonly clientSecret: string;
   readonly redirectUri: string;
   readonly tokenEndpoint?: string;
   readonly userEndpoint?: string;
-  readonly fetchImpl?: typeof fetch;
+  readonly fetchImpl?: FetchBinding;
 }
 
 interface DiscordTokenResponse {
@@ -36,7 +38,11 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
     private readonly config: DiscordOAuthConfig,
     private readonly logger: ILogger,
   ) {
-    this.fetch = config.fetchImpl ?? fetch;
+    const fetchImpl = config.fetchImpl ?? fetch;
+    this.fetch =
+      typeof fetchImpl === "function"
+        ? fetchImpl.bind(globalThis)
+        : fetchImpl.fetch.bind(fetchImpl);
     this.tokenEndpoint =
       config.tokenEndpoint ?? "https://discord.com/api/oauth2/token";
     this.userEndpoint =
@@ -64,19 +70,19 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
   }
 
   private async requestToken(code: string): Promise<DiscordTokenResponse> {
-    const params = new URLSearchParams();
-    params.append("client_id", this.config.clientId);
-    params.append("client_secret", this.config.clientSecret);
-    params.append("grant_type", "authorization_code");
-    params.append("code", code);
-    params.append("redirect_uri", this.config.redirectUri);
-
-    const headers = new Headers();
-    headers.set("Content-Type", "application/x-www-form-urlencoded");
+    const params = new URLSearchParams({
+      client_id: this.config.clientId,
+      client_secret: this.config.clientSecret,
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: this.config.redirectUri,
+    });
 
     const response = await this.fetch(this.tokenEndpoint, {
       method: "POST",
-      headers,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
       body: params,
     });
 
@@ -89,11 +95,10 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
   }
 
   private async fetchUser(accessToken: string): Promise<DiscordUserResponse> {
-    const headers = new Headers();
-    headers.set("Authorization", `Bearer ${accessToken}`);
-
     const response = await this.fetch(this.userEndpoint, {
-      headers,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
     if (!response.ok) {
       throw new Error(
