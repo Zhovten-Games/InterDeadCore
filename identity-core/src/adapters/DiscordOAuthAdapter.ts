@@ -39,10 +39,9 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
     private readonly logger: ILogger,
   ) {
     const fetchImpl = config.fetchImpl ?? fetch;
-    this.fetch =
-      typeof fetchImpl === "function"
-        ? fetchImpl.bind(globalThis)
-        : fetchImpl.fetch.bind(fetchImpl);
+    const rawFetch =
+      typeof fetchImpl === "function" ? fetchImpl : fetchImpl.fetch;
+    this.fetch = (...args) => rawFetch(...args);
     this.tokenEndpoint =
       config.tokenEndpoint ?? "https://discord.com/api/oauth2/token";
     this.userEndpoint =
@@ -83,7 +82,7 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: params,
+      body: params.toString(),
     });
 
     if (!response.ok) {
