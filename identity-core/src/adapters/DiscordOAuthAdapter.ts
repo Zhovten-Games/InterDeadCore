@@ -64,16 +64,20 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
   }
 
   private async requestToken(code: string): Promise<DiscordTokenResponse> {
+    const params = new URLSearchParams();
+    params.append("client_id", this.config.clientId);
+    params.append("client_secret", this.config.clientSecret);
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    params.append("redirect_uri", this.config.redirectUri);
+
+    const headers = new Headers();
+    headers.set("Content-Type", "application/x-www-form-urlencoded");
+
     const response = await this.fetch(this.tokenEndpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        client_id: this.config.clientId,
-        client_secret: this.config.clientSecret,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: this.config.redirectUri,
-      }),
+      headers,
+      body: params,
     });
 
     if (!response.ok) {
@@ -85,8 +89,11 @@ export class DiscordOAuthAdapter implements IDiscordOAuthPort {
   }
 
   private async fetchUser(accessToken: string): Promise<DiscordUserResponse> {
+    const headers = new Headers();
+    headers.set("Authorization", `Bearer ${accessToken}`);
+
     const response = await this.fetch(this.userEndpoint, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers,
     });
     if (!response.ok) {
       throw new Error(
