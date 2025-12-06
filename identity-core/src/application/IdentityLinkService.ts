@@ -12,6 +12,7 @@ import {
 export interface IdentityLinkOptions {
   readonly allowUsernameOverride?: boolean;
   readonly policy?: DiscordLinkPolicy;
+  readonly discordLink?: DiscordProfileLink;
 }
 
 export class IdentityLinkService {
@@ -42,7 +43,7 @@ export class IdentityLinkService {
     }
 
     const linkPayload: DiscordProfileLink =
-      await this.discordPort.exchangeCode(code);
+      options.discordLink ?? (await this.discordPort.exchangeCode(code));
     const policy = options.policy ?? new DiscordLinkPolicy();
     const identity = new IdentityAggregate({ metadata });
 
