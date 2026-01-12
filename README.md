@@ -18,7 +18,7 @@
 ║   Research and tooling repo referenced by the project; supporting   ║
 ║   framework work that may be mentioned from public docs.            ║
 ╠═════════════════════════════════════════════════════════════════════╣
-║                            INTERDEADIT                              ║
+║                           INTERDEADCORE                             ║
 ║═════════════════════════════════════════════════════════════════════║
 ║ InterDeadCore is the monorepo for shared InterDead domain packages. ║
 ║ It keeps identity and EFBD scoring logic decoupled from             ║
