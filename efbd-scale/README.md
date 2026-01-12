@@ -1,8 +1,8 @@
-# @interdead/efbd-scale
+## Introduction
 
-Hexagonal EFBD (Echoed Big Five of Dread) scale package that ingests triggers from mini-games, persists axis scores, and exposes query helpers for host runtimes.
+`@interdead/efbd-scale` is the hexagonal EFBD (Echoed Big Five of Dread) scale package. It ingests triggers from mini-games, persists axis scores, and exposes query helpers for host runtimes. Axis definitions align with the PsyFramework methodology used across the metaverse.
 
-## Axes
+### Axes
 
 Updated axis codes aligned with the narrative glossary:
 
@@ -12,23 +12,17 @@ Updated axis codes aligned with the narrative glossary:
 - `EBF-EXPOSURE`
 - `EBF-ABANDON`
 
+The canonical persisted form uses the hyphenated strings above. In TypeScript, `AxisCode` uses underscore identifiers (for example, `AxisCode.EBF_SOCIAL`) but each enum value is the hyphenated string (for example, `"EBF-SOCIAL"`).
+
 All scoring operations apply a `+1` increment per trigger and clamp at a ceiling of `100`.
 
-## Schema
+## Installation
 
-Cloudflare D1 table `efbd_scale` is expected to expose the following columns:
+```bash
+npm install @interdead/efbd-scale
+```
 
-| column         | type    | notes                                   |
-| -------------- | ------- | --------------------------------------- |
-| `profile_id`   | text    | foreign key to the host profile record. |
-| `axis_code`    | text    | one of the `EBF-*` codes.               |
-| `score`        | integer | cumulative score per axis.             |
-| `trigger_source` | text  | latest trigger origin identifier.      |
-| `updated_at`   | text    | ISO timestamp of the last update.      |
-
-Trigger logs can be persisted to KV with the key format `efbd-trigger-log:{profileId}:{timestamp}:{axis}`.
-
-## Usage
+## Usage Examples
 
 ```ts
 import {
@@ -61,20 +55,10 @@ const snapshot = await query.fetchSnapshot("player-1");
 console.log(snapshot.axisScores.get(AxisCode.EBF_SOCIAL)?.value); // -> 1
 ```
 
-## Dependency injection helper
+## Additional Notes
 
-Use `registerEfbdScale(container, options)` to attach the ingestion and query services to your host IoC container. Provide `IScaleRepository` and `ITriggerLogRepository` adapters suited for your runtime.
-
-## Testing
-
-Run unit tests with:
-
-```bash
-npm test
-```
-
-Type checks:
-
-```bash
-npm run typecheck
-```
+- Use `registerEfbdScale(container, options)` to attach the ingestion and query services to your host IoC container. Provide `IScaleRepository` and `ITriggerLogRepository` adapters suited for your runtime.
+- Schemas and KV key formats live in the Core docs: [D1 schemas](../docs/data/schemas.md) and [KV conventions](../docs/data/kv-conventions.md).
+- Testing commands:
+  - `npm test`
+  - `npm run typecheck`

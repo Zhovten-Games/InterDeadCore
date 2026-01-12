@@ -1,25 +1,89 @@
-╭────────────────────────╮  ╭────────╮  ╭──────────╮
-│ [Proto](../InterDeadProto) │  │  Core  │  │ [IT](../InterDeadIT) │
-╰────────────────────────╯  ╰════════╯  ╰──────────╯
+<pre>
+╔═════════════════════════════════════════════════════════════════════╗
+║                     INTERDEAD :: REPOSITORIES                       ║
+╠═════════════════════════════════════════════════════════════════════╣
+║ ○ <a href="https://github.com/Zhovten-Games/InterDeadReferenceLibrary">InterDead Reference Library (public)</a>                              ║
+║   Public reference library: documents and notes that are safe       ║
+║   to share outside the private workspace.                           ║
+║                                                                     ║
+║ ○ <a href="https://github.com/Zhovten-Games/InterDeadIT">InterDeadIT (website / entry point)</a>                               ║
+║   The website: the public entry point into the InterDead meta-verse.║
+║   Hosts the “About” and related public-facing materials.            ║
+║                                                                     ║
+║ > InterDeadCore (identity + EFBD core)                              ║
+║   Core modules used by the website: identity/auth and EFBD logic.   ║
+║   Published as packages and consumed by InterDeadIT.                ║
+║                                                                     ║
+║ ○ <a href="https://github.com/Zhovten-Games/PsyFramework">PsyFramework</a> (research / tooling)                                 ║
+║   Research and tooling repo referenced by the project; supporting   ║
+║   framework work that may be mentioned from public docs.            ║
+╠═════════════════════════════════════════════════════════════════════╣
+║                            INTERDEADIT                              ║
+║═════════════════════════════════════════════════════════════════════║
+║ InterDeadCore is the monorepo for shared InterDead domain packages. ║
+║ It keeps identity and EFBD scoring logic decoupled from             ║
+║ presentation, follows hexagonal architecture boundaries, and        ║
+║ ships reusable building blocks for downstream runtimes. Each        ║
+║ package is versioned independently, while the repository maintains  ║
+║ shared data contracts and operational notes so adapters remain      ║
+║ consistent across deployments. This layout differs from InterDeadIT,║
+║ which hosts a single website surface while consuming these packages ║
+║ as dependencies.                                                    ║
+║═════════════════════════════════╦═══════════════════════════════════║
+║    ECHO OF AN UNFADING MEMORY   ║   INTERDEAD WIKI (ALL LANGUAGES)  ║
+╠═════════════════════════════════╬═══════════════════════════════════╣
+║ <a href="https://interdead.phantom-draft.com/about/">READ (EN)</a>                       ║ <a href="https://interdead.fandom.com/wiki/InterDead_Wiki">READ (EN)</a>                         ║
+╠═════════════════════════════════╬═══════════════════════════════════╣
+║ <a href="https://interdead.phantom-draft.com/ru/about/">READ (RU)</a>                       ║ <a href="https://interdead.fandom.com/ru/wiki/Interdead_%D0%92%D0%B8%D0%BA%D0%B8">READ (RU)</a>                         ║
+╠═════════════════════════════════╬═══════════════════════════════════╣
+║ <a href="https://interdead.phantom-draft.com/uk/about/">READ (UK)</a>                       ║ <a href="https://interdead.fandom.com/uk/wiki/Main_Page">READ (UK)</a>                         ║
+╠═════════════════════════════════╬═══════════════════════════════════╣
+║ <a href="https://interdead.phantom-draft.com/ja/about/">READ (JA)</a>                       ║ <a href="https://interdead.fandom.com/ja/wiki/InterDead_Wiki">READ (JA)</a>                         ║
+║═════════════════════════════════╩═══════════════════════════════════║
+║                            CONTACT                                  ║
+╠═════════════════════════════════════════════════════════════════════╣
+║ <a href="https://www.linkedin.com/company/zhovten-games/">Zhovten Games — LinkedIn</a>                                            ║
+╚═════════════════════════════════════════════════════════════════════╝
+</pre>
 
-## Introduction
+Packages:
+- `@interdead/identity-core`: Discord-authenticated identity kernel with pluggable storage.
+- `@interdead/efbd-scale`: EFBD scoring domain for adaptive horror design.
 
-InterDeadCore is the monorepo that harmonizes the shared services of the metaverse once the prototype branched into independent packages. It keeps domain kernels decoupled from presentation, follows the hexagonal architecture, and ships reusable building blocks for identity, EFBD scoring, and auxiliary tooling.
+## Stack
 
-## Installation
+- TypeScript domain packages
+- Cloudflare Workers + D1 + KV (host-provided bindings)
+- Hexagonal architecture with ports-and-adapters
 
-Each package is versioned and published independently. Refer to the package-level README files for installation commands:
-- `efbd-scale`: D1/KV-aware EFBD scoring domain for adaptive horror design.
-- `identity-core`: Discord-authenticated identity kernel with pluggable storage.
+## Local dev
 
-## Usage Examples
+- Install dependencies per package: `npm install` inside `identity-core/` and `efbd-scale/`.
+- Run tests per package: `npm test` (and `npm run typecheck` where available).
 
-See the package READMEs for runnable snippets. A typical host registers the identity core and EFBD scale adapters in its IoC container, then wires presentation controllers in the site repo (`InterDeadIT`).
+## Deployment (high-level)
 
-## Additional Notes
+- Packages are released independently from the monorepo.
+- Downstream repositories (such as InterDeadIT) explicitly upgrade package versions.
+- See release details in the documentation index below.
 
-- The Fear Inversion Matrix reference is now kept in `wiki/fear_inversion_matrix.md` for easier cross-linking across packages.
-- Aligns with the narrative and deployment orchestrated by the landing site (`InterDeadIT`) and the prototype lore (`InterDeadProto`).
-- Contributions should preserve the ports-and-adapters layering to keep packages swappable across runtimes.
-- Release flow: bump a package with `npm version patch`, create and push a tag matching the package name (for example `identity-core-v0.1.6` or `efbd-scale-v0.1.3`), and ask downstream repos to upgrade explicitly (e.g., `npm install @interdead/identity-core@0.1.6`).
-- Shared D1 schema: the `profiles` table should exist with `profile_id TEXT PRIMARY KEY`, `data TEXT NOT NULL` (JSON identity aggregate plus auxiliary fields like `completedGames`), `last_cleanup_at TEXT`, `last_cleanup_timezone TEXT`, and `delete_count INTEGER DEFAULT 0`.
+## Conventions
+
+- Keep adapters thin and let domain services own the business logic.
+- Use object-oriented aggregates and shared base errors to keep responsibilities separated.
+- Preserve ports-and-adapters layering so packages remain swappable across runtimes.
+
+## Engineering standards
+
+Engineering standards: Canonical project-wide engineering ideals and development standards are maintained in the InterDead Reference Library (public): https://github.com/Zhovten-Games/InterDeadReferenceLibrary/tree/main/standards/development. This repository follows that canon; local notes here must not override or fork the shared standards.
+
+## Docs index
+
+Start here: [docs/index.md](docs/index.md)
+
+Key references:
+
+- [Architecture overview](docs/architecture/overview.md)
+- [Ports and events](docs/architecture/ports-and-events.md)
+- [Data contracts](docs/data/schemas.md)
+- [Release flow](docs/release/versioning-and-tags.md)
