@@ -79,7 +79,7 @@ Engineering standards: Canonical project-wide engineering ideals and development
 
 ## Docs
 
-Start here: [docs/index.md](docs/README.md)
+Start here: [docs/README.md](docs/README.md)
 
 Key references:
 
