@@ -20,3 +20,7 @@ InterDeadCore is a monorepo of domain packages. This documentation expands on th
 
 ## Operations
 - [Cloudflare bindings](operations/cloudflare-bindings.md)
+
+## Deployment scope
+
+InterDeadCore ships as npm packages; the deployment surface is release + publish. Hosting details (Workers, Pages, and runtime secrets) live in downstream applications such as InterDeadIT, which consume the published packages.
