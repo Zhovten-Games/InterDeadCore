@@ -17,6 +17,7 @@ InterDeadCore is a monorepo of domain packages. This documentation expands on th
 ## Release
 - [Versioning and tags](release/versioning-and-tags.md)
 - [Downstream upgrades](release/downstream-upgrades.md)
+- [npm token management](release/npm-token-management.md)
 
 ## Operations
 - [Cloudflare bindings](operations/cloudflare-bindings.md)
