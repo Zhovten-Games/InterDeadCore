@@ -44,7 +44,6 @@ Reduced-motion behavior:
 - `minimal`: apply reduced membrane profile.
 - `full`: run with unchanged profile.
 
-
 ## Release by tag
 
 Framework package releases are triggered by Git tags in the format `framework-vX.Y.Z`.

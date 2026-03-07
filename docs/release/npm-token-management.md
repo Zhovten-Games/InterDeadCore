@@ -8,15 +8,14 @@ Release workflows publish packages to npm using a repository secret named `NPM_T
 
 - `.github/workflows/efbd-scale-release.yml`
 - `.github/workflows/identity-core-release.yml`
+- `.github/workflows/framework-release.yml`
 
-In both workflows, the publish step sets:
+Release workflows inject npm credentials from the repository secret `NPM_TOKEN`.
 
-```yaml
-env:
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
+- `identity-core-release.yml` and `efbd-scale-release.yml` pass it as `NODE_AUTH_TOKEN`.
+- `framework-release.yml` writes `.npmrc` with `//registry.npmjs.org/:_authToken=${NPM_TOKEN}` before publish.
 
-This means GitHub Actions reads the token value from repository secrets and injects it for `npm publish`.
+In both patterns, GitHub Actions reads the token value from repository secrets and injects it for `npm publish`.
 
 ## Does token name in npm matter?
 
@@ -31,7 +30,7 @@ No. The display name of a granular token in npm UI is just metadata for humans.
 For this repository it is for publish, not for regular CI build/test jobs.
 
 - CI workflows (`*-ci.yml`) run install/test/build and do not use `NPM_TOKEN`.
-- Release workflows (`*-release.yml`) publish to npm and require `NPM_TOKEN`.
+- Release workflows (`*-release.yml`) publish to npm and require `NPM_TOKEN`, including the framework release workflow.
 
 ## Recommended permissions for granular token
 
