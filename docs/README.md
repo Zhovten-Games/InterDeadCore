@@ -9,6 +9,7 @@ InterDeadCore is a monorepo of domain packages. This documentation expands on th
 ## Packages
 - [EFBD scale](packages/efbd-scale.md)
 - [Identity core](packages/identity-core.md)
+- [InterDead framework](packages/framework.md)
 
 ## Data contracts
 - [D1 schemas](data/schemas.md)

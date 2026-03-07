@@ -1,0 +1,5 @@
+import type { FrameworkConfig } from "../contracts/framework-config.js";
+
+export interface ConfigSourcePort {
+  load(): FrameworkConfig;
+}

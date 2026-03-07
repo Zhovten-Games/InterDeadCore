@@ -1,0 +1,11 @@
+import type {
+  FrameworkConfig,
+  FrameworkFeatureKey,
+} from "./framework-config.js";
+
+export interface FrameworkFeature {
+  readonly key: FrameworkFeatureKey;
+  mount(): void;
+  updateConfig(config: FrameworkConfig): void;
+  destroy(): void;
+}

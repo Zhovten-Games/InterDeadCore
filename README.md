@@ -53,6 +53,7 @@
 Packages:
 - `@interdead/identity-core`: Discord-authenticated identity kernel with pluggable storage.
 - `@interdead/efbd-scale`: EFBD scoring domain for adaptive horror design.
+- `@interdead/framework`: modular UI framework runtime for host integrations (membrane first).
 
 ## Stack
 
@@ -62,7 +63,7 @@ Packages:
 
 ## Local dev
 
-- Install dependencies per package: `npm install` inside `identity-core/` and `efbd-scale/`.
+- Install dependencies per package: `npm install` inside `identity-core/`, `efbd-scale/`, and `framework/`.
 - Run tests per package: `npm test` (and `npm run typecheck` where available).
 
 ## Deployment (high-level)

@@ -9,6 +9,7 @@ InterDeadCore packages are versioned and published independently. Use semantic v
 3. Create a git tag that includes the package name and version, for example:
    - `identity-core-v0.1.6`
    - `efbd-scale-v0.1.3`
+   - `framework-v0.1.0`
 4. Push the tag and publish the package.
 
 ## Why tags matter
