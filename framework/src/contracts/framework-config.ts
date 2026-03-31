@@ -1,4 +1,4 @@
-export type FrameworkFeatureKey = "membrane";
+export type FrameworkFeatureKey = "membrane" | "decorativeTitle";
 
 export type ReducedMotionMode = "disable" | "minimal" | "full";
 
@@ -12,6 +12,19 @@ export interface MembraneConfig {
   pulseDecay?: number;
   amplitude?: number;
   reducedMotionMode?: ReducedMotionMode;
+  pulseEventName?: string;
+}
+
+export interface DecorativeTitleConfig {
+  selectors?: string[];
+  sourceHeadingClassName?: string;
+  decorativeClassName?: string;
+  membranePulseEventName?: string;
+  pulseHighlightClassName?: string;
+  pulseHighlightDurationMs?: number;
+  localeFontFamilies?: Record<string, string>;
+  patternPrimaryText?: string;
+  patternSecondaryText?: string;
 }
 
 export type FrameworkFeatureFlags = Partial<
@@ -20,6 +33,7 @@ export type FrameworkFeatureFlags = Partial<
 
 export interface FrameworkFeatureOptions {
   membrane?: MembraneConfig;
+  decorativeTitle?: DecorativeTitleConfig;
 }
 
 export interface FrameworkConfig {

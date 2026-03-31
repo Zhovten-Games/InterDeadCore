@@ -23,3 +23,9 @@ InterDeadCore contains the domain kernels that are shared across the InterDead e
 ## Reference artifacts
 
 The Fear Inversion Matrix is stored in the repository wiki at [`wiki/fear_inversion_matrix.md`](../../wiki/fear_inversion_matrix.md). Treat it as a reference asset that informs EFBD scoring and trigger definitions rather than an executable specification.
+
+## UI overlay z-index contract
+
+Hosts that render membrane effects must define shared layer tokens where `--layer-membrane-overlay` is strictly higher than `--layer-host-window`. Runtime membrane canvases and no-JS fallback overlays must use the same membrane token so both modes keep identical stacking above all modal/window overlays.
+Startup gates (preloaders) must also participate in the same token hierarchy (for example, above host windows but below membrane) so auto-open modals cannot become interactive before boot release completes.
+

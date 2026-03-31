@@ -4,6 +4,7 @@ import type {
   MembraneConfig,
 } from "../contracts/framework-config.js";
 import type { FrameworkFeature } from "../contracts/framework-feature.js";
+import { DecorativeTitleFeature } from "../features/decorative-title/decorative-title-feature.js";
 import { MembraneFeature } from "../features/membrane/membrane-feature.js";
 import type { ConfigSourcePort } from "../ports/config-source-port.js";
 import { FeatureRegistry } from "./feature-registry.js";
@@ -17,6 +18,7 @@ export class FrameworkRuntime {
   private readonly registry = new FeatureRegistry();
   private readonly features: FrameworkFeature[] = [];
   private config: FrameworkConfig = {};
+  private booted = false;
 
   constructor(
     private readonly configSource: ConfigSourcePort,
@@ -29,9 +31,17 @@ export class FrameworkRuntime {
       "membrane",
       () => new MembraneFeature(windowRef, documentRef),
     );
+    this.registry.register(
+      "decorativeTitle",
+      () => new DecorativeTitleFeature(windowRef, documentRef),
+    );
   }
 
   boot(): void {
+    if (this.booted) {
+      return;
+    }
+
     this.config = this.configSource.load();
 
     const windowRef = this.options.windowRef || window;
@@ -42,7 +52,13 @@ export class FrameworkRuntime {
     const reducedMode =
       this.config.featureOptions?.membrane?.reducedMotionMode || "minimal";
     if (reducedMotionPreferred && reducedMode === "disable") {
-      return;
+      this.config = {
+        ...this.config,
+        enabledFeatures: {
+          ...this.config.enabledFeatures,
+          membrane: false,
+        },
+      };
     }
 
     if (reducedMotionPreferred && reducedMode === "minimal") {
@@ -58,9 +74,12 @@ export class FrameworkRuntime {
       feature.updateConfig(this.config);
       feature.mount();
     }
+
+    this.booted = true;
   }
 
   destroy(): void {
+    this.booted = false;
     while (this.features.length > 0) {
       const feature = this.features.pop();
       feature?.destroy();

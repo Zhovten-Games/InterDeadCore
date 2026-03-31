@@ -1,4 +1,5 @@
 import type {
+  DecorativeTitleConfig,
   FrameworkConfig,
   MembraneConfig,
 } from "../contracts/framework-config.js";
@@ -10,6 +11,7 @@ const DEFAULT_SELECTORS = [
   "[data-auth-button]",
   ".gm-slider__arrow",
 ];
+const DEFAULT_TITLE_SELECTORS = ["[data-decorative-title]"];
 
 export class HugoConfigSourceAdapter implements ConfigSourcePort {
   constructor(private readonly documentRef: Document = document) {}
@@ -48,14 +50,50 @@ export class HugoConfigSourceAdapter implements ConfigSourcePort {
           : marker.dataset.frameworkReducedMotionMode === "full"
             ? "full"
             : "minimal",
+      pulseEventName:
+        marker.dataset.frameworkMembranePulseEvent || "interdead:membrane-pulse",
+    };
+
+    const titleEnabled = marker.dataset.frameworkDecorativeTitle === "true";
+    const titleSelectors = marker.dataset.frameworkDecorativeTitleSelectors
+      ? marker.dataset.frameworkDecorativeTitleSelectors
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean)
+      : DEFAULT_TITLE_SELECTORS;
+
+    const decorativeTitleConfig: DecorativeTitleConfig = {
+      selectors: titleSelectors,
+      membranePulseEventName:
+        marker.dataset.frameworkDecorativeTitlePulseEvent ||
+        "interdead:membrane-pulse",
+      pulseHighlightDurationMs: marker.dataset.frameworkDecorativeTitlePulseMs
+        ? Number(marker.dataset.frameworkDecorativeTitlePulseMs)
+        : 220,
+      localeFontFamilies: {
+        default:
+          marker.dataset.frameworkDecorativeTitleFontDefault ||
+          "var(--font-heading)",
+        en:
+          marker.dataset.frameworkDecorativeTitleFontEn ||
+          '"Pirata One", system-ui',
+        ru: marker.dataset.frameworkDecorativeTitleFontRu || "var(--font-heading)",
+        uk: marker.dataset.frameworkDecorativeTitleFontUk || "var(--font-heading)",
+        ja: marker.dataset.frameworkDecorativeTitleFontJa || "var(--font-heading)",
+      },
+      patternPrimaryText: marker.dataset.frameworkDecorativeTitlePatternPrimary,
+      patternSecondaryText:
+        marker.dataset.frameworkDecorativeTitlePatternSecondary,
     };
 
     return {
       enabledFeatures: {
         membrane: membraneEnabled,
+        decorativeTitle: titleEnabled,
       },
       featureOptions: {
         membrane: membraneConfig,
+        decorativeTitle: decorativeTitleConfig,
       },
     };
   }
