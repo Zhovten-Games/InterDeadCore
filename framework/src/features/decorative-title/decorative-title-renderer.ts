@@ -26,7 +26,7 @@ export class DecorativeTitleRenderer {
     private readonly config: DecorativeTitleConfig,
   ) {
     this.sourceTextValue = this.sourceHeading.textContent?.trim() || "";
-    this.instanceId = `idf-title-${titleCounter += 1}`;
+    this.instanceId = `idf-title-${(titleCounter += 1)}`;
     this.hiddenTextNode = this.documentRef.createTextNode(this.sourceTextValue);
     this.fillTextNode = this.documentRef.createTextNode(this.sourceTextValue);
     this.shadowTextNode = this.documentRef.createTextNode(this.sourceTextValue);
@@ -38,16 +38,16 @@ export class DecorativeTitleRenderer {
   }
 
   syncText(): void {
-    const sourceNode = this.sourceHeading.querySelector<HTMLElement>(
-      SOURCE_NODE_SELECTOR,
-    );
+    const sourceNode =
+      this.sourceHeading.querySelector<HTMLElement>(SOURCE_NODE_SELECTOR);
 
     if (!sourceNode) {
       this.rebuildFromHeadingText();
       return;
     }
 
-    this.sourceTextValue = sourceNode.textContent?.trim() || this.sourceTextValue;
+    this.sourceTextValue =
+      sourceNode.textContent?.trim() || this.sourceTextValue;
     this.applyCurrentTextValue();
   }
 
@@ -78,7 +78,8 @@ export class DecorativeTitleRenderer {
     hiddenText.appendChild(this.hiddenTextNode);
 
     const decorativeRoot = this.documentRef.createElement("span");
-    decorativeRoot.className = this.config.decorativeClassName || "idf-decorative-title";
+    decorativeRoot.className =
+      this.config.decorativeClassName || "idf-decorative-title";
     decorativeRoot.style.setProperty(
       "--idf-title-font",
       this.resolveFontFamilyByLocale(),
@@ -123,12 +124,18 @@ export class DecorativeTitleRenderer {
     const patternTextPrimary = this.documentRef.createElementNS(SVG_NS, "text");
     patternTextPrimary.setAttribute("x", "0");
     patternTextPrimary.setAttribute("y", "16");
-    patternTextPrimary.setAttribute("class", "idf-decorative-title__patternLine");
+    patternTextPrimary.setAttribute(
+      "class",
+      "idf-decorative-title__patternLine",
+    );
     patternTextPrimary.textContent =
       this.config.patternPrimaryText ||
       "SYSTEM://INTERDEAD :: SIGNAL STABLE :: NOIR-LAYER ACTIVE";
 
-    const patternTextSecondary = this.documentRef.createElementNS(SVG_NS, "text");
+    const patternTextSecondary = this.documentRef.createElementNS(
+      SVG_NS,
+      "text",
+    );
     patternTextSecondary.setAttribute("x", "0");
     patternTextSecondary.setAttribute("y", "36");
     patternTextSecondary.setAttribute(
@@ -199,8 +206,7 @@ export class DecorativeTitleRenderer {
       ...(this.config.localeFontFamilies || {}),
     };
 
-    configured.default =
-      configured.default || DEFAULT_FONT_BY_LOCALE.default;
+    configured.default = configured.default || DEFAULT_FONT_BY_LOCALE.default;
 
     if (configured[langTag]) {
       return configured[langTag];

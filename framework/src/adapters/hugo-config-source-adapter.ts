@@ -51,7 +51,8 @@ export class HugoConfigSourceAdapter implements ConfigSourcePort {
             ? "full"
             : "minimal",
       pulseEventName:
-        marker.dataset.frameworkMembranePulseEvent || "interdead:membrane-pulse",
+        marker.dataset.frameworkMembranePulseEvent ||
+        "interdead:membrane-pulse",
     };
 
     const titleEnabled = marker.dataset.frameworkDecorativeTitle === "true";
@@ -77,9 +78,15 @@ export class HugoConfigSourceAdapter implements ConfigSourcePort {
         en:
           marker.dataset.frameworkDecorativeTitleFontEn ||
           '"Pirata One", system-ui',
-        ru: marker.dataset.frameworkDecorativeTitleFontRu || "var(--font-heading)",
-        uk: marker.dataset.frameworkDecorativeTitleFontUk || "var(--font-heading)",
-        ja: marker.dataset.frameworkDecorativeTitleFontJa || "var(--font-heading)",
+        ru:
+          marker.dataset.frameworkDecorativeTitleFontRu ||
+          "var(--font-heading)",
+        uk:
+          marker.dataset.frameworkDecorativeTitleFontUk ||
+          "var(--font-heading)",
+        ja:
+          marker.dataset.frameworkDecorativeTitleFontJa ||
+          "var(--font-heading)",
       },
       patternPrimaryText: marker.dataset.frameworkDecorativeTitlePatternPrimary,
       patternSecondaryText:

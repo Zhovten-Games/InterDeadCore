@@ -34,9 +34,9 @@ describe("DecorativeTitleFeature", () => {
     feature.mount();
 
     const heading = dom.window.document.querySelector("h1") as HTMLElement;
-    expect(heading.querySelector(".idf-decorative-title__source")?.textContent).toBe(
-      "InterDead",
-    );
+    expect(
+      heading.querySelector(".idf-decorative-title__source")?.textContent,
+    ).toBe("InterDead");
     expect(heading.querySelector(".idf-decorative-title__svg")).not.toBeNull();
 
     feature.destroy();
@@ -64,9 +64,9 @@ describe("DecorativeTitleFeature", () => {
     heading.textContent = "New Signal";
     await new Promise((resolve) => dom.window.setTimeout(resolve, 0));
 
-    expect(heading.querySelector(".idf-decorative-title__source")?.textContent).toBe(
-      "New Signal",
-    );
+    expect(
+      heading.querySelector(".idf-decorative-title__source")?.textContent,
+    ).toBe("New Signal");
     expect(heading.querySelector(".idf-decorative-title__svg")).not.toBeNull();
 
     feature.destroy();

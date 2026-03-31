@@ -166,8 +166,14 @@ export class DecorativeTitleFeature implements FrameworkFeature {
 
     for (const mounted of this.mountedTitles) {
       mounted.node.classList.add(pulseClass);
-      mounted.node.style.setProperty("--idf-pulse-x", `${Math.round(pulseX * 100)}%`);
-      mounted.node.style.setProperty("--idf-pulse-y", `${Math.round(pulseY * 100)}%`);
+      mounted.node.style.setProperty(
+        "--idf-pulse-x",
+        `${Math.round(pulseX * 100)}%`,
+      );
+      mounted.node.style.setProperty(
+        "--idf-pulse-y",
+        `${Math.round(pulseY * 100)}%`,
+      );
     }
 
     if (this.pulseResetTimer) {
@@ -186,7 +192,6 @@ export class DecorativeTitleFeature implements FrameworkFeature {
     const customEvent = event as CustomEvent<PulseDetail>;
     return customEvent.detail || {};
   }
-
 
   private scheduleBodyRetry(): void {
     if (this.pendingBodyMountRetry) {

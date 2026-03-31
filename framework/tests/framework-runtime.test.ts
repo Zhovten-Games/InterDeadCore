@@ -37,8 +37,12 @@ describe("FrameworkRuntime", () => {
     runtime.boot();
     runtime.boot();
 
-    expect(dom.window.document.querySelectorAll("#idf-decorative-title-style")).toHaveLength(1);
-    expect(dom.window.document.querySelectorAll(".idf-decorative-title")).toHaveLength(1);
+    expect(
+      dom.window.document.querySelectorAll("#idf-decorative-title-style"),
+    ).toHaveLength(1);
+    expect(
+      dom.window.document.querySelectorAll(".idf-decorative-title"),
+    ).toHaveLength(1);
 
     runtime.destroy();
   });

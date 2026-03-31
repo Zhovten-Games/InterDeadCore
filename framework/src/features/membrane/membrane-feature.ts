@@ -85,8 +85,10 @@ export class MembraneFeature implements FrameworkFeature {
     for (const node of uniqueNodes) {
       const handler = () => {
         const rect = (node as HTMLElement).getBoundingClientRect();
-        const xRatio = (rect.left + rect.width * 0.5) / this.windowRef.innerWidth;
-        const yRatio = (rect.top + rect.height * 0.5) / this.windowRef.innerHeight;
+        const xRatio =
+          (rect.left + rect.width * 0.5) / this.windowRef.innerWidth;
+        const yRatio =
+          (rect.top + rect.height * 0.5) / this.windowRef.innerHeight;
         this.renderer?.triggerPulse(xRatio, yRatio);
         this.dispatchPulseEvent(xRatio, yRatio);
       };
