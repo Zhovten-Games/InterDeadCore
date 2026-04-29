@@ -8,6 +8,7 @@ import {
   ILogger,
   ISessionStore,
 } from "../ports/index.js";
+import { IdentityCoreError } from "../utils/errorMapper.js";
 
 export interface IdentityLinkOptions {
   readonly allowUsernameOverride?: boolean;
@@ -40,6 +41,12 @@ export class IdentityLinkService {
   ): Promise<IdentityAggregate> {
     if (!this.discordPort) {
       throw new Error("Discord OAuth is disabled for this runtime");
+    }
+
+    if (metadata.profileId !== profileId) {
+      throw new IdentityCoreError(
+        "Profile metadata does not match requested profile id",
+      );
     }
 
     const linkPayload: DiscordProfileLink =

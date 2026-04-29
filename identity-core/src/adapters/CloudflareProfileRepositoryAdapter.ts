@@ -11,6 +11,7 @@ export interface CloudflareBindings {
   readonly kv?: {
     get: (key: string) => Promise<string | null>;
     put: (key: string, value: string) => Promise<void>;
+    delete: (key: string) => Promise<void>;
   };
 }
 
@@ -51,7 +52,7 @@ export class CloudflareProfileRepositoryAdapter implements IIdentityRepository {
       "DELETE FROM profiles WHERE profile_id = ?",
       [profileId],
     );
-    await this.bindings.kv?.put(`identity:${profileId}`, "");
+    await this.bindings.kv?.delete(`identity:${profileId}`);
     this.logger.warn("Deleted profile from Cloudflare", { profileId });
   }
 }
