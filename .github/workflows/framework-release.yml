@@ -1,28 +1,36 @@
 name: Framework Release
-
-on:
+'on':
   push:
     tags:
-      - 'framework-v*'
+      - framework-v*
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Run npm publish in dry-run mode'
+        description: Run npm publish in dry-run mode
         type: boolean
         default: true
-
 concurrency:
   group: framework-release-${{ github.ref_name }}
   cancel-in-progress: false
-
 jobs:
+  warden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.19.0
+      - run: npm --prefix identity-core ci
+      - run: npm --prefix efbd-scale ci
+      - run: npm --prefix framework ci
+      - run: node tools/warden.mjs
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Resolve package directory
         id: package-dir
         shell: bash
@@ -35,7 +43,6 @@ jobs:
             echo "Expected package directory framework or interdead-framework." >&2
             exit 1
           fi
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -43,7 +50,6 @@ jobs:
           cache: npm
           cache-dependency-path: ${{ steps.package-dir.outputs.dir }}/package-lock.json
           registry-url: https://registry.npmjs.org
-
       - name: Verify release tag matches package version
         if: github.event_name == 'push'
         shell: bash
@@ -63,23 +69,18 @@ jobs:
           fi
 
           echo "Validated version: $TAG_VERSION"
-
       - name: Install dependencies
         working-directory: ${{ steps.package-dir.outputs.dir }}
         run: npm ci
-
       - name: Check formatting
         working-directory: ${{ steps.package-dir.outputs.dir }}
         run: npm run format:check
-
       - name: Run tests
         working-directory: ${{ steps.package-dir.outputs.dir }}
         run: npm test
-
       - name: Build
         working-directory: ${{ steps.package-dir.outputs.dir }}
         run: npm run build
-
       - name: Validate build artifacts
         working-directory: ${{ steps.package-dir.outputs.dir }}
         shell: bash
@@ -90,7 +91,6 @@ jobs:
               exit 1
             fi
           done
-
       - name: Create npm auth config
         working-directory: ${{ steps.package-dir.outputs.dir }}
         shell: bash
@@ -104,17 +104,17 @@ jobs:
           cat > .npmrc <<'EOF'
           //registry.npmjs.org/:_authToken=${NPM_TOKEN}
           EOF
-
       - name: Publish to npm (dry-run)
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
         working-directory: ${{ steps.package-dir.outputs.dir }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public --dry-run
-
       - name: Publish to npm
         if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)
         working-directory: ${{ steps.package-dir.outputs.dir }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+    needs:
+      - warden
