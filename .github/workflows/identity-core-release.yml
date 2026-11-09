@@ -1,23 +1,31 @@
 name: Identity Core Release
-
-on:
+'on':
   push:
     tags:
-      - "identity-core-v*.*.*"
-  workflow_dispatch:
-
+      - identity-core-v*.*.*
+  workflow_dispatch: null
 jobs:
+  warden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.19.0
+      - run: npm --prefix identity-core ci
+      - run: npm --prefix efbd-scale ci
+      - run: npm --prefix framework ci
+      - run: node tools/warden.mjs
   publish:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: identity-core
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -25,17 +33,15 @@ jobs:
           cache: npm
           cache-dependency-path: identity-core/package-lock.json
           registry-url: https://registry.npmjs.org
-
       - name: Install dependencies
         run: npm ci
-
       - name: Run tests
         run: npm test
-
       - name: Build
         run: npm run build
-
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+    needs:
+      - warden
