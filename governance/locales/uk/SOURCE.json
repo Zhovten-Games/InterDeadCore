@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "locale": "uk",
+  "status": "candidate",
+  "sourceBaseCommit": "26e45cdb554f28b90d48ac3dfcd5b262d253e670",
+  "translator": "OpenAI Codex (machine-assisted translation)",
+  "reviewer": null,
+  "lastSubstantiveReview": null,
+  "documents": [
+    {
+      "translation": "governance/locales/uk/PROFILE.md",
+      "source": "governance/PROFILE.md",
+      "sourceSha256": "aa2941ff559ff13313457fd59f57e647bf6ab3cf7cb9b5d7fa3736155b4334aa",
+      "translationSha256": "00e667b10a473fb86f0d3e23fc019d823d3a10b63a58f18f5eafcd735d967cd8"
+    },
+    {
+      "translation": "governance/locales/uk/legislation/ECOSYSTEM.md",
+      "source": "governance/legislation/ECOSYSTEM.md",
+      "sourceSha256": "ab0ec52e3ef0e93c8b9dcdc119b78f835f77506a14417db4386d1191c6f131ed",
+      "translationSha256": "7f9cf47990302e5e674ac6dae7da2874d9b00a80fcadea07c82d7c3920507590"
+    },
+    {
+      "translation": "governance/locales/uk/LICENSE.md",
+      "source": "governance/LICENSE.md",
+      "sourceSha256": "674b09586e4a067cfac723cb2ec15b651336cb9cb8dec18cb02c41bfe8b9c3bf",
+      "translationSha256": "050b6cffb51cf42f4dab6e4f7251a14bbc81d9b80078f1b4afb67961af2d784c"
+    },
+    {
+      "translation": "governance/locales/uk/LICENSE-MIT.md",
+      "source": "framework/LICENSE",
+      "sourceSha256": "9d4ad206d22f105f6ff842667734a23e5cc4d094c9eea46ec3e2ca9cef1b1a16",
+      "translationSha256": "1e4f68764da2bc6d6ed93154b9b33c64c89ab73d5200ff3468f2a0e6e012c797"
+    }
+  ]
+}
